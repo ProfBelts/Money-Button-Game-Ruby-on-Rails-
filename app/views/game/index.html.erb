@@ -1,0 +1,65 @@
+<%= stylesheet_link_tag ('styles') %>
+
+<div class = "container"> 
+    <header> 
+    <h2>Your Money: <%= @money %> </h2> 
+        <form method="post" action="/start"> 
+        <input id="<%= @start_game ? 'reset' : 'start' %>" type="submit" value="<%= @start_game ? 'Reset Game' : 'Start Game' %>">
+
+        </form>
+    </header>
+   
+    <% if @chances == 0 %>
+    <h2>No chances left. Reset the game to play again</h2>
+  <% else %>
+    <h2>Chances Left: <%= @chances %></h2>
+  <% end %>
+  
+   
+
+
+    <main>
+    <% risks = {
+      "Low Risk" => "by -100 up to 100",
+      "Moderate Risk" => "by -1000 up to 1000",
+      "High Risk" => "by -2500 up to 2500",
+      "Severe Risk" => "by -5000 up to 5000"
+    } %>
+    
+    <% risk_values = {
+      "Low Risk" => "bet_low",
+      "Moderate Risk" => "bet_moderate",
+      "High Risk" => "bet_high",
+      "Severe Risk" => "bet_severe"
+    } %>
+    
+    <% risks.each do |risk_level, risk_description| %>
+      <% bet_name = risk_values[risk_level] %>
+      <div class="box">
+        <h3><%= risk_level %></h3>
+        <form method="post" action="/bet">
+          <input class="btn-bet" type="submit" name="<%= bet_name %>" value="Bet">
+        </form>
+        <p><%= risk_description %></p>
+      </div>
+    <% end %>
+  </main>
+  
+
+
+  <section class="message"> 
+  <h2>Game Host:</h2>
+
+  <div class="log"> 
+    <% @message.each do |bet_message, result| %>
+      <% color = result ? "red" : "green" %>
+      <p style="color: <%= color %>"><%= bet_message %></p>
+    <% end %>
+  </div>
+</section>
+
+
+
+</div>
+
+
